@@ -3,58 +3,18 @@
 
 void Game::Start()
 {
-    bool running = true;
+    std::cout << "========================================\n";
+    std::cout << "          CAMP WOODWREATH\n";
+    std::cout << "========================================\n\n";
 
-    while (running)
-    {
-        ShowTitleScreen();
+    std::cout << "A supernatural investigation.\n\n";
 
-        int choice;
+    std::cout << "Your current stats:\n\n";
 
-        std::cout << "> ";
-        std::cin >> choice;
-
-        switch (choice)
-        {
-        case 1:
-            StartNewGame();
-            break;
-
-        case 2:
-            running = false;
-            break;
-
-        default:
-            std::cout << "\nInvalid choice.\n";
-            break;
-        }
-    }
-}
-
-void Game::ShowTitleScreen()
-{
-    std::cout << "\n";
-    std::cout << "============================================\n";
-    std::cout << "                                            \n";
-    std::cout << "          C A M P  W O O D W R E A T H     \n";
-    std::cout << "                                            \n";
-    std::cout << "              A Horror Story                \n";
-    std::cout << "                                            \n";
-    std::cout << "============================================\n";
-    std::cout << "\n";
-
-    std::cout << "[1] New Game\n";
-    std::cout << "[2] Quit\n";
-    std::cout << "\n";
-}
-
-void Game::StartNewGame()
-{
-    std::cout << "\n";
-    std::cout << "============================================\n";
-    std::cout << "              NEW GAME                      \n";
-    std::cout << "============================================\n";
-    std::cout << "\n";
-
-    std::cout << "The investigation begins...\n\n";
+    std::cout << "Hunting:    " << player.GetHunting() << "/10\n";
+    std::cout << "Lore:       " << player.GetLore() << "/10\n";
+    std::cout << "Perception: " << player.GetPerception() << "/10\n";
+    std::cout << "Courage:    " << player.GetCourage() << "/10\n";
+    std::cout << "Charisma:   " << player.GetCharisma() << "/10\n";
+    std::cout << "Stealth:    " << player.GetStealth() << "/10\n";
 }

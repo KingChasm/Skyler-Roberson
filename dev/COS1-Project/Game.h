@@ -7,9 +7,6 @@ class Game
 private:
 	Player player;
 
-	void ShowTitleScreen();
-	void StartNewGame();
-
 public:
 	void Start();
 };
