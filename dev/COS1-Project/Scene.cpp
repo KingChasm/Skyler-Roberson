@@ -19,3 +19,18 @@ void Scene::AddChoice(
 
 	choices.push_back(newChoice);
 }
+
+std::string Scene::GetTitle() const
+{
+	return title;
+}
+
+std::string Scene::GetDescription() const
+{
+	return description;
+}
+
+const std::vector<Choice>& Scene::GetChoices() const
+{
+	return choices;
+}
