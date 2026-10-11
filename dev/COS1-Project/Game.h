@@ -10,6 +10,8 @@ class Game
 private:
 	Player player;
 
+	int GetValidatedChoice(int minimum, int maximum);
+
 	std::vector<Scene> scenes;
 
 	void ShowTitleScreen();
