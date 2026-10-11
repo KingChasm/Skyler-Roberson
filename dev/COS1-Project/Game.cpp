@@ -62,7 +62,7 @@ void Game::CreateScenes()
     Scene introduction(
         "The Case",
         "Three people have disappeared near the small town of "
-        "Bellweather over the last two months.\n\n"
+        "Grand Portage over the last two months.\n\n"
         "The police believe they simply got lost in the wilderness.\n"
         "You don't.\n\n"
         "All three disappearances have one thing in common:\n\n"
@@ -129,6 +129,30 @@ void Game::PlayScene(int sceneIndex)
         std::cout << "============================================\n\n";
 
         std::cout << scene.GetDescription() << "\n\n";
+
+        // ============================================
+        // Collectible Lore System
+        // ============================================
+
+        // Notebook Page 1 is discovered in Grand Portage.
+        if (currentScene == 1)
+        {
+            if (player.CollectNotebookPage(1))
+            {
+                std::cout << "============================================\n";
+                std::cout << "              LORE DISCOVERED!\n";
+                std::cout << "============================================\n";
+                std::cout << "You discovered Notebook Page 1!\n";
+                std::cout << "Notebook Pages: "
+                    << player.GetNotebookPageCount()
+                    << "/3\n";
+                std::cout << "============================================\n\n";
+            }
+        }
+
+        // ============================================
+        // Display Available Choices
+        // ============================================
 
         const std::vector<Choice>& choices = scene.GetChoices();
 

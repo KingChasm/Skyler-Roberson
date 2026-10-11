@@ -81,3 +81,39 @@ void Player::IncreaseStealth()
 		stealth++;
 	}
 }
+
+// =============================
+// Collectible Lore System
+// =============================
+
+// Collects a notebook page if it is valid and not already collected.
+bool Player::CollectNotebookPage(int pageNumber)
+{
+	// Only pages 1, 2, and 3 exist at this time; potentially adding more as I increase the 
+	// scene amount.
+	if (pageNumber < 1 || pageNumber > 3)
+	{
+		return false;
+	}
+
+	// insert().second is true if the page was newly added.
+	return mCollectedNotebookPages.insert(pageNumber).second;
+}
+
+// Checks whether the player already has a specific page.
+bool Player::HasNotebookPage(int pageNumber) const
+{
+	return mCollectedNotebookPages.contains(pageNumber);
+}
+
+// Returns the number of unique notebook pages collected.
+int Player::GetNotebookPageCount() const
+{
+	return static_cast<int>(mCollectedNotebookPages.size());
+}
+
+// Checks whether the player has collected all pages; again, currently only 3 pages exist Mrs. Asphodel.
+bool Player::HasCompleteNotebook() const
+{
+	return GetNotebookPageCount() == 3;
+}

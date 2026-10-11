@@ -1,5 +1,5 @@
 #pragma once
-
+#include <set>
 class Player
 {
 private:
@@ -10,6 +10,8 @@ private:
     int courage = 0;
     int charisma = 0;
     int stealth = 0;
+
+    std::set<int> mCollectedNotebookPages;
 
 public:
 
@@ -28,4 +30,10 @@ public:
     void IncreaseCourage();
     void IncreaseCharisma();
     void IncreaseStealth();
+
+    // Lore System
+    bool CollectNotebookPage(int pageNumber);
+    bool HasNotebookPage(int pageNumber) const;
+    int GetNotebookPageCount() const;
+    bool HasCompleteNotebook() const;
 };
