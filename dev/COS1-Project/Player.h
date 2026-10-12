@@ -1,5 +1,16 @@
 #pragma once
 #include <set>
+
+enum class PlayerStat
+{
+    Hunting,
+    Lore,
+    Perception,
+    Courage,
+    Charisma,
+    Stealth
+};
+
 class Player
 {
 private:
@@ -22,6 +33,9 @@ public:
     int GetCourage() const;
     int GetCharisma() const;
     int GetStealth() const;
+
+    // Skill Check System
+    bool CheckStat(PlayerStat stat, int requiredLevel) const;
 
     // Increase stats
     void IncreaseHunting();

@@ -20,6 +20,14 @@ private:
 	void CreateScenes();
 	void PlayScene(int sceneIndex);
 
+	// Story Milestone Tracking
+	bool mInvestigatedGrandPortage = false;
+	bool mInvestigatedRangerStation = false;
+	bool mInvestigatedTracks = false;
+
+	//Status
+	void ShowPlayerStatus() const;
+
 public:
 	void Start();
 };

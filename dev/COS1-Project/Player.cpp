@@ -117,3 +117,34 @@ bool Player::HasCompleteNotebook() const
 {
 	return GetNotebookPageCount() == 3;
 }
+
+// ============================================
+// Skill Check System
+// ============================================
+
+bool Player::CheckStat(PlayerStat stat, int requiredLevel) const
+{
+	switch (stat)
+	{
+	case PlayerStat::Hunting:
+		return GetHunting() >= requiredLevel;
+
+	case PlayerStat::Lore:
+		return GetLore() >= requiredLevel;
+
+	case PlayerStat::Perception:
+		return GetPerception() >= requiredLevel;
+
+	case PlayerStat::Courage:
+		return GetCourage() >= requiredLevel;
+
+	case PlayerStat::Charisma:
+		return GetCharisma() >= requiredLevel;
+
+	case PlayerStat::Stealth:
+		return GetStealth() >= requiredLevel;
+
+	default:
+		return false;
+	}
+}

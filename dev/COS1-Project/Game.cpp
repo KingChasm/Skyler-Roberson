@@ -1,6 +1,7 @@
 #include "Game.h"
 #include <iostream>
 #include <limits>
+#include <vector>
 
 void Game::Start()
 {
@@ -45,6 +46,12 @@ void Game::ShowTitleScreen()
 
 void Game::StartNewGame()
 {
+    mInvestigatedGrandPortage = false; // Reset story milestone
+    mInvestigatedRangerStation = false;
+    mInvestigatedTracks = false;
+
+	player = Player(); // Reset player stats and collected notebook pages
+
     scenes.clear();
 
     CreateScenes();
@@ -167,6 +174,29 @@ void Game::CreateScenes()
     );
 
     scenes.push_back(hiddenEntrance);
+
+    // ============================================
+    // Scene 6 - Suspicious Tracks
+    // ============================================
+
+    Scene suspiciousTracks(
+        "Tracks in the Mud",
+        "You crouch beside the ranger station.\n\n"
+        "Deep impressions mark the damp earth.\n"
+        "At first, they resemble the tracks of a large wolf.\n\n"
+        "But something is wrong.\n\n"
+        "The tracks gradually change shape.\n"
+        "What began as four-legged footprints becomes\n"
+        "something disturbingly similar to human footsteps.\n\n"
+        "Whatever left these tracks was no ordinary animal."
+    );
+
+    suspiciousTracks.AddChoice(
+        "Return to the ranger station.",
+        4
+    );
+
+    scenes.push_back(suspiciousTracks);
 }
 
 void Game::PlayScene(int sceneIndex)
@@ -202,6 +232,23 @@ void Game::PlayScene(int sceneIndex)
                     << "/3\n";
                 std::cout << "============================================\n\n";
             }
+        }
+
+        if (currentScene == 1 && !mInvestigatedGrandPortage)
+        {
+            player.IncreasePerception();
+
+            mInvestigatedGrandPortage = true;
+
+            std::cout << "============================================\n";
+            std::cout << "           MILESTONE REACHED!\n";
+            std::cout << "============================================\n";
+            std::cout << "You carefully investigate Grand Portage.\n";
+            std::cout << "Your awareness of the surroundings improves.\n\n";
+            std::cout << "Perception increased by 1!\n";
+            std::cout << "Current Perception: "
+                << player.GetPerception() << "/10\n";
+            std::cout << "============================================\n\n";
         }
 
 		if (currentScene == 3)
@@ -244,6 +291,42 @@ void Game::PlayScene(int sceneIndex)
             }
         }
 
+        if (currentScene == 4 && !mInvestigatedRangerStation)
+        {
+            player.IncreaseCourage();
+
+            mInvestigatedRangerStation = true;
+
+            std::cout << "============================================\n";
+            std::cout << "           MILESTONE REACHED!\n";
+            std::cout << "============================================\n";
+            std::cout << "You explore the abandoned ranger station.\n";
+            std::cout << "Despite the evidence of something dangerous,\n";
+            std::cout << "you refuse to abandon the investigation.\n\n";
+            std::cout << "Courage increased by 1!\n";
+            std::cout << "Current Courage: "
+                << player.GetCourage() << "/10\n";
+            std::cout << "============================================\n\n";
+        }
+
+        if (currentScene == 6 && !mInvestigatedTracks)
+        {
+            player.IncreaseHunting();
+
+            mInvestigatedTracks = true;
+
+            std::cout << "============================================\n";
+            std::cout << "           MILESTONE REACHED!\n";
+            std::cout << "============================================\n";
+            std::cout << "You study the unusual tracks carefully.\n";
+            std::cout << "Your knowledge of tracking dangerous creatures\n";
+            std::cout << "has improved.\n\n";
+            std::cout << "Hunting increased by 1!\n";
+            std::cout << "Current Hunting: "
+                << player.GetHunting() << "/10\n";
+            std::cout << "============================================\n\n";
+        }
+
         // ============================================
         // Display Available Choices
         // ============================================
@@ -261,6 +344,16 @@ void Game::PlayScene(int sceneIndex)
                 });
         }
 
+        //Ranger Station, perception check
+        if (currentScene == 4 &&
+            player.CheckStat(PlayerStat::Perception, 1))
+        {
+            availableChoices.push_back({
+                "[Perception] Investigate the unusual tracks.",
+                6
+                });
+        }
+
         // Display all currently available choices.
         for (int i = 0; i < static_cast<int>(availableChoices.size()); i++)
         {
@@ -268,13 +361,35 @@ void Game::PlayScene(int sceneIndex)
                 << availableChoices[i].text << "\n";
         }
 
+        std::cout << "\n[0] View Player Status\n";
+
         std::cout << "\n";
 
         int choice = GetValidatedChoice(
-            1,
+            0,
             static_cast<int>(availableChoices.size())
         );
 
+        // Option 0 opens the Player Status screen.
+        if (choice == 0)
+        {
+            ShowPlayerStatus();
+
+            std::cout << "\nPress Enter to return to the story...";
+
+            // Wait for the player to press Enter.
+            std::cin.ignore(
+                std::numeric_limits<std::streamsize>::max(),
+                '\n'
+            );
+
+            std::cin.get();
+
+            // Redisplay the current scene.
+            continue;
+        }
+
+        // Process regular story choices.
         currentScene = availableChoices[choice - 1].nextScene;
     }
 }
@@ -311,4 +426,62 @@ int Game::GetValidatedChoice(int minimum, int maximum)
             '\n'
         );
     }
+}
+
+// ============================================
+// Player Status Screen (Most useful thing I've made imo)
+// ============================================
+
+void Game::ShowPlayerStatus() const
+{
+    std::cout << "\n";
+    std::cout << "============================================\n";
+    std::cout << "               PLAYER STATUS\n";
+    std::cout << "============================================\n\n";
+
+    // Player Stats
+    std::cout << "CHARACTER STATS\n";
+    std::cout << "--------------------------------------------\n";
+
+    std::cout << "Hunting:    " << player.GetHunting() << "/10\n";
+    std::cout << "Lore:       " << player.GetLore() << "/10\n";
+    std::cout << "Perception: " << player.GetPerception() << "/10\n";
+    std::cout << "Courage:    " << player.GetCourage() << "/10\n";
+    std::cout << "Charisma:   " << player.GetCharisma() << "/10\n";
+    std::cout << "Stealth:    " << player.GetStealth() << "/10\n";
+
+    // Collected Lore
+    std::cout << "\n";
+    std::cout << "COLLECTED LORE\n";
+    std::cout << "--------------------------------------------\n";
+
+    std::cout << "Notebook Pages: "
+        << player.GetNotebookPageCount()
+        << "/3\n";
+
+    // Display individual notebook pages.
+    for (int page = 1; page <= 3; page++)
+    {
+        std::cout << "Page " << page << ": ";
+
+        if (player.HasNotebookPage(page))
+        {
+            std::cout << "Collected\n";
+        }
+        else
+        {
+            std::cout << "Missing\n";
+        }
+    }
+
+    // Completed notebook message.
+    if (player.HasCompleteNotebook())
+    {
+        std::cout << "\n";
+        std::cout << "NOTEBOOK COMPLETE!\n";
+        std::cout << "Hidden Lodge Entrance Unlocked.\n";
+    }
+
+    std::cout << "\n";
+    std::cout << "============================================\n";
 }
