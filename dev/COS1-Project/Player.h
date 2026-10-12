@@ -1,4 +1,15 @@
 #pragma once
+#include <set>
+
+enum class PlayerStat
+{
+    Hunting,
+    Lore,
+    Perception,
+    Courage,
+    Charisma,
+    Stealth
+};
 
 class Player
 {
@@ -11,6 +22,8 @@ private:
     int charisma = 0;
     int stealth = 0;
 
+    std::set<int> mCollectedNotebookPages;
+
 public:
 
     // Getters
@@ -21,6 +34,9 @@ public:
     int GetCharisma() const;
     int GetStealth() const;
 
+    // Skill Check System
+    bool CheckStat(PlayerStat stat, int requiredLevel) const;
+
     // Increase stats
     void IncreaseHunting();
     void IncreaseLore();
@@ -28,4 +44,10 @@ public:
     void IncreaseCourage();
     void IncreaseCharisma();
     void IncreaseStealth();
+
+    // Lore System
+    bool CollectNotebookPage(int pageNumber);
+    bool HasNotebookPage(int pageNumber) const;
+    int GetNotebookPageCount() const;
+    bool HasCompleteNotebook() const;
 };

@@ -10,6 +10,8 @@ class Game
 private:
 	Player player;
 
+	int GetValidatedChoice(int minimum, int maximum);
+
 	std::vector<Scene> scenes;
 
 	void ShowTitleScreen();
@@ -17,6 +19,21 @@ private:
 
 	void CreateScenes();
 	void PlayScene(int sceneIndex);
+
+	// Story Milestone Tracking
+	bool mInvestigatedGrandPortage = false;
+	bool mInvestigatedRangerStation = false;
+	bool mInvestigatedTracks = false;
+	bool mIntroducedToDirector = false;
+
+	// Status
+	void ShowPlayerStatus() const;
+
+	// Character Suspicion System
+	int mDirectorSuspicion = 0;
+	bool mAskedAboutMissingPeople = false;
+	bool mReassuredDirector = false;
+	bool mConfrontedDirector = false;
 
 public:
 	void Start();
