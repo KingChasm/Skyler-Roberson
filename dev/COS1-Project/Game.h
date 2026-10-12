@@ -24,9 +24,16 @@ private:
 	bool mInvestigatedGrandPortage = false;
 	bool mInvestigatedRangerStation = false;
 	bool mInvestigatedTracks = false;
+	bool mIntroducedToDirector = false;
 
-	//Status
+	// Status
 	void ShowPlayerStatus() const;
+
+	// Character Suspicion System
+	int mDirectorSuspicion = 0;
+	bool mAskedAboutMissingPeople = false;
+	bool mReassuredDirector = false;
+	bool mConfrontedDirector = false;
 
 public:
 	void Start();

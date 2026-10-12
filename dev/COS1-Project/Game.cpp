@@ -49,6 +49,12 @@ void Game::StartNewGame()
     mInvestigatedGrandPortage = false; // Reset story milestone
     mInvestigatedRangerStation = false;
     mInvestigatedTracks = false;
+    mIntroducedToDirector = false;
+
+    mDirectorSuspicion = 0;
+    mAskedAboutMissingPeople = false;
+    mReassuredDirector = false;
+    mConfrontedDirector = false;
 
 	player = Player(); // Reset player stats and collected notebook pages
 
@@ -109,6 +115,7 @@ void Game::CreateScenes()
     camp.AddChoice("Investigate the abandoned supply shed.", 3);
     camp.AddChoice("Follow the forest trail.", 4);
     camp.AddChoice("Return to Grand Portage.", 1);
+	camp.AddChoice("Approach the main lodge and speak with the director.", 7);
     camp.AddChoice("End the investigation.", -1);
 
     scenes.push_back(camp);
@@ -169,8 +176,16 @@ void Game::CreateScenes()
     );
 
     hiddenEntrance.AddChoice(
+        "Descend into the underground passage.",
+        14
+    );
+    hiddenEntrance.AddChoice(
         "Return to the campgrounds.",
         2
+    );
+    hiddenEntrance.AddChoice(
+        "Collect evidence and escape Camp Woodwreath.",
+        15
     );
 
     scenes.push_back(hiddenEntrance);
@@ -197,6 +212,319 @@ void Game::CreateScenes()
     );
 
     scenes.push_back(suspiciousTracks);
+
+    // ============================================
+    // Scene 7 - The Camp Director
+    // ============================================
+
+    Scene campDirector(
+        "A Friendly Welcome",
+        "As you approach the main lodge, a man steps "
+        "onto the porch.\n\n"
+
+        "He is tall, broad-shouldered, and wearing "
+        "a faded camp jacket.\n\n"
+
+        "\"Well, hello there! Don't get many visitors "
+        "this time of year.\"\n\n"
+
+        "His smile seems genuine, but his eyes linger "
+        "on you a moment too long.\n\n"
+
+        "\"Name's Woodwreath. I run this place. "
+        "What brings you all the way out here?\""
+    );
+
+    campDirector.AddChoice(
+        "Introduce yourself honestly.",
+        8
+    );
+
+    campDirector.AddChoice(
+        "Pretend you're interested in attending the camp.",
+        9
+    );
+
+    campDirector.AddChoice(
+        "Ask about the missing people.",
+        10
+    );
+
+    campDirector.AddChoice(
+        "Excuse yourself and return to the campgrounds.",
+        2
+    );
+
+    scenes.push_back(campDirector);
+
+    // ============================================
+    // Scene 8 - Honest Introduction
+    // ============================================
+
+    Scene honestIntroduction(
+        "An Honest Introduction",
+        "You introduce yourself and explain that "
+        "you're visiting the area.\n\n"
+
+        "Director Woodwreath studies your face.\n\n"
+
+        "\"Visiting, huh? Well, you're a long way "
+        "from the usual tourist spots.\"\n\n"
+
+        "He chuckles, but something about his "
+        "expression feels rehearsed.\n\n"
+
+        "\"Just be careful wandering these woods. "
+        "We've had some... animal problems lately.\""
+    );
+
+    honestIntroduction.AddChoice(
+        "Ask what kind of animals he's talking about.",
+        7
+    );
+
+    honestIntroduction.AddChoice(
+        "Thank him and return to the campgrounds.",
+        2
+    );
+
+    scenes.push_back(honestIntroduction);
+
+    // ============================================
+    // Scene 9 - Pretending to Be a Camper
+    // ============================================
+
+    Scene pretendCamper(
+        "A Potential Camper",
+        "You explain that you're interested in "
+        "attending Camp Woodwreath.\n\n"
+
+        "The director's expression brightens.\n\n"
+
+        "\"Well, now! That's wonderful to hear. "
+        "We're always happy to welcome new faces.\"\n\n"
+
+        "He gestures toward the cabins.\n\n"
+
+        "\"We pride ourselves on making everyone "
+        "feel like part of the family.\"\n\n"
+
+        "For some reason, the word 'family' "
+        "makes you uncomfortable."
+    );
+
+    pretendCamper.AddChoice(
+        "Ask about the camp's activities.",
+        7
+    );
+
+    pretendCamper.AddChoice(
+        "Return to the campgrounds.",
+        2
+    );
+
+    scenes.push_back(pretendCamper);
+
+    // ============================================
+    // Scene 10 - Missing People
+    // ============================================
+
+    Scene missingPeople(
+        "An Uncomfortable Question",
+        "You ask Director Woodwreath about the "
+        "people who have disappeared nearby.\n\n"
+
+        "His smile disappears.\n\n"
+
+        "\"Missing people? Can't say I know "
+        "anything about that.\"\n\n"
+
+        "His voice remains calm, but his hands "
+        "tighten around the porch railing.\n\n"
+
+        "\"These woods are dangerous. People "
+        "wander off sometimes. Happens everywhere.\"\n\n"
+
+        "He takes a step closer.\n\n"
+
+        "\"I'd recommend you stop asking "
+        "questions like that.\""
+    );
+
+    missingPeople.AddChoice(
+        "Apologize and change the subject.",
+        7
+    );
+
+    missingPeople.AddChoice(
+        "Leave and return to the campgrounds.",
+        2
+    );
+
+    scenes.push_back(missingPeople);
+
+    // ============================================
+    // Scene 11 - Reassure the Director
+    // ============================================
+
+    Scene reassureDirector(
+        "A Convincing Explanation",
+        "You offer Director Woodwreath a reassuring smile.\n\n"
+
+        "\"Sorry if that sounded strange. I heard some "
+        "rumors in town and got curious.\"\n\n"
+
+        "The director watches you carefully.\n\n"
+
+        "\"Rumors have a way of getting out of hand "
+        "around here,\" he says.\n\n"
+
+        "After a moment, his expression softens.\n\n"
+
+        "\"Just enjoy your visit, alright?\""
+    );
+
+    reassureDirector.AddChoice(
+        "Return to the conversation.",
+        7
+    );
+
+    reassureDirector.AddChoice(
+        "Leave the main lodge.",
+        2
+    );
+
+    scenes.push_back(reassureDirector);
+
+    // ============================================
+    // Scene 12 - Confront the Director
+    // ============================================
+
+    Scene confrontDirector(
+        "A Dangerous Accusation",
+        "You refuse to accept the director's explanation.\n\n"
+
+        "\"Three people disappear near your camp, "
+        "and you expect me to believe that's a coincidence?\"\n\n"
+
+        "Director Woodwreath's expression hardens.\n\n"
+
+        "\"You should be very careful about what "
+        "you're accusing people of.\"\n\n"
+
+        "For a moment, his eyes seem almost animalistic.\n\n"
+
+        "Then he smiles again.\n\n"
+
+        "\"I think it's time you left my camp.\""
+    );
+
+    confrontDirector.AddChoice(
+        "Back away and return to the campgrounds.",
+        2
+    );
+
+    scenes.push_back(confrontDirector);
+
+    // ============================================
+    // Scene 13 - Unwelcome Visitor
+    // ============================================
+
+    Scene unwelcomeVisitor(
+        "An Unwelcome Visitor",
+        "You approach the main lodge once again.\n\n"
+
+        "Director Woodwreath is waiting on the porch.\n\n"
+
+        "\"I thought I told you to leave.\"\n\n"
+
+        "His friendly expression is gone.\n"
+        "He steps down from the porch, blocking your path.\n\n"
+
+        "\"You don't belong here.\"\n\n"
+
+        "For a brief moment, you notice something\n"
+        "unnatural about his teeth.\n\n"
+
+        "They're much sharper than they should be.\n\n"
+
+        "\"This is your last warning.\""
+    );
+
+    unwelcomeVisitor.AddChoice(
+        "Retreat to the campgrounds.",
+        2
+    );
+
+    scenes.push_back(unwelcomeVisitor);
+
+    // ============================================
+    // Scene 14 - The Underground Passage
+    // ============================================
+
+    Scene undergroundPassage(
+        "Into the Darkness",
+        "You carefully lift the rusted hatch.\n\n"
+
+        "A narrow staircase descends beneath the lodge.\n"
+        "The air is cold and carries the smell of decay.\n\n"
+
+        "You switch on your flashlight and begin descending.\n\n"
+
+        "At the bottom, you discover a long underground\n"
+        "passage carved into the earth.\n\n"
+
+        "Deep claw marks cover the wooden support beams.\n"
+        "Something large has been moving through here.\n\n"
+
+        "Then you hear it.\n\n"
+
+        "Footsteps.\n\n"
+
+        "Something is approaching from deeper in the tunnel."
+    );
+
+    undergroundPassage.AddChoice(
+        "Retreat and escape with the evidence.",
+        15
+    );
+    undergroundPassage.AddChoice(
+        "Retreat through the hatch.",
+        5
+    );
+
+    scenes.push_back(undergroundPassage);
+
+    // ============================================
+    // Scene 15 - Prototype Ending
+    // ============================================
+
+    Scene escapeEnding(
+        "ESCAPE - The Truth Survives",
+        "You carefully document the hidden entrance,\n"
+        "the claw marks, and the evidence beneath the lodge.\n\n"
+
+        "As you retreat through the forest, a distant\n"
+        "howl echoes between the trees.\n\n"
+
+        "You finally understand what you've uncovered.\n\n"
+
+        "Camp Woodwreath is hiding something monstrous.\n"
+        "And the people responsible know you're investigating.\n\n"
+
+        "You escape with enough evidence to continue\n"
+        "the hunt another day.\n\n"
+
+        "TO BE CONTINUED...\n\n"
+        "Thank you for playing the Camp Woodwreath prototype!"
+    );
+
+    escapeEnding.AddChoice(
+        "Finish the investigation.",
+        -1
+    );
+
+    scenes.push_back(escapeEnding);
 }
 
 void Game::PlayScene(int sceneIndex)
@@ -327,12 +655,116 @@ void Game::PlayScene(int sceneIndex)
             std::cout << "============================================\n\n";
         }
 
+        if (currentScene == 8 && !mIntroducedToDirector)
+        {
+            player.IncreaseCharisma();
+
+            mIntroducedToDirector = true;
+
+            std::cout << "============================================\n";
+            std::cout << "           MILESTONE REACHED!\n";
+            std::cout << "============================================\n";
+
+            std::cout << "You remain composed while speaking with\n";
+            std::cout << "Director Woodwreath.\n\n";
+
+            std::cout << "Your confidence in social situations grows.\n\n";
+
+            std::cout << "Charisma increased by 1!\n";
+            std::cout << "Current Charisma: "
+                << player.GetCharisma() << "/10\n";
+
+            std::cout << "============================================\n\n";
+        }
+
+        if (currentScene == 10 && !mAskedAboutMissingPeople)
+        {
+            mDirectorSuspicion += 2;
+
+            if (mDirectorSuspicion > 10)
+            {
+                mDirectorSuspicion = 10;
+            }
+
+            mAskedAboutMissingPeople = true;
+
+            std::cout << "============================================\n";
+            std::cout << "       DIRECTOR'S SUSPICION INCREASED\n";
+            std::cout << "============================================\n";
+            std::cout << "Your questions about the missing people\n";
+            std::cout << "have made Director Woodwreath uneasy.\n\n";
+
+            std::cout << "Suspicion increased by 2!\n";
+            std::cout << "Current Suspicion: "
+                << mDirectorSuspicion << "/10\n";
+
+            std::cout << "============================================\n\n";
+        }
+
+        // ============================================
+        // Director Suspicion - Successful Reassurance
+        // ============================================
+
+        if (currentScene == 11 && !mReassuredDirector)
+        {
+            // Reduce Suspicion by 2.
+            mDirectorSuspicion -= 2;
+
+            // Prevent Suspicion from dropping below zero.
+            if (mDirectorSuspicion < 0)
+            {
+                mDirectorSuspicion = 0;
+            }
+
+            mReassuredDirector = true;
+
+            std::cout << "============================================\n";
+            std::cout << "          DIRECTOR REASSURED\n";
+            std::cout << "============================================\n";
+
+            std::cout << "Your explanation seems to calm the director.\n";
+            std::cout << "He appears less suspicious of your intentions.\n\n";
+
+            std::cout << "Suspicion reduced by up to 2!\n";
+            std::cout << "Current Suspicion: "
+                << mDirectorSuspicion << "/10\n";
+
+            std::cout << "============================================\n\n";
+        }
+
         // ============================================
         // Display Available Choices
         // ============================================
 
         // Create a temporary list of choices for this visit.
         std::vector<Choice> availableChoices = scene.GetChoices();
+
+        // ============================================
+        // Director Relationship - Lodge Access
+        // ============================================
+
+        if (currentScene == 2 && mConfrontedDirector)
+        {
+            // Remove the normal conversation option.
+            for (auto it = availableChoices.begin();
+                it != availableChoices.end();)
+            {
+                if (it->nextScene == 7)
+                {
+                    it = availableChoices.erase(it);
+                }
+                else
+                {
+                    ++it;
+                }
+            }
+
+            // Replace it with a hostile encounter.
+            availableChoices.push_back({
+                "Approach the lodge despite the director's warning.",
+                13
+                });
+        }
 
         // If the player has completed the notebook,
         // unlock the secret entrance at the campgrounds.
@@ -352,6 +784,46 @@ void Game::PlayScene(int sceneIndex)
                 "[Perception] Investigate the unusual tracks.",
                 6
                 });
+        }
+
+		// Director Woodwreath, charisma check
+        if (currentScene == 10 &&
+            player.CheckStat(PlayerStat::Charisma, 1) &&
+            !mReassuredDirector)
+        {
+            availableChoices.push_back({
+                "[Charisma] Reassure the director.",
+                11
+                });
+        }
+
+        // Director Woodwreath, Confrontation
+        if (currentScene == 10 && mDirectorSuspicion >= 2)
+        {
+            availableChoices.push_back({
+                "[Suspicion] Challenge the director's explanation.",
+                12
+                });
+        }
+
+        // ============================================
+        // Story Event - Director Confronted
+        // ============================================
+
+        if (currentScene == 12 && !mConfrontedDirector)
+        {
+            mConfrontedDirector = true;
+
+            std::cout << "============================================\n";
+            std::cout << "           RELATIONSHIP CHANGED\n";
+            std::cout << "============================================\n";
+
+            std::cout << "Director Woodwreath now considers you\n";
+            std::cout << "a threat to his camp.\n\n";
+
+            std::cout << "He has ordered you to leave the property.\n";
+
+            std::cout << "============================================\n\n";
         }
 
         // Display all currently available choices.
@@ -391,6 +863,7 @@ void Game::PlayScene(int sceneIndex)
 
         // Process regular story choices.
         currentScene = availableChoices[choice - 1].nextScene;
+
     }
 }
 
@@ -480,6 +953,30 @@ void Game::ShowPlayerStatus() const
         std::cout << "\n";
         std::cout << "NOTEBOOK COMPLETE!\n";
         std::cout << "Hidden Lodge Entrance Unlocked.\n";
+    }
+
+    std::cout << "\n";
+    std::cout << "CAMP RELATIONSHIPS\n";
+    std::cout << "--------------------------------------------\n";
+
+    std::cout << "Director Woodwreath's Suspicion: "
+        << mDirectorSuspicion << "/10\n";
+
+    if (mDirectorSuspicion <= 2)
+    {
+        std::cout << "Attitude: Friendly\n";
+    }
+    else if (mDirectorSuspicion <= 5)
+    {
+        std::cout << "Attitude: Cautious\n";
+    }
+    else if (mDirectorSuspicion <= 8)
+    {
+        std::cout << "Attitude: Suspicious\n";
+    }
+    else
+    {
+        std::cout << "Attitude: Hostile\n";
     }
 
     std::cout << "\n";
