@@ -50,6 +50,7 @@ void Game::StartNewGame()
     mInvestigatedRangerStation = false;
     mInvestigatedTracks = false;
     mIntroducedToDirector = false;
+	mPretendToBeCamper = false;
 
     mDirectorSuspicion = 0;
     mAskedAboutMissingPeople = false;
@@ -525,6 +526,64 @@ void Game::CreateScenes()
     );
 
     scenes.push_back(escapeEnding);
+
+    // ============================================
+    // Scene 16 - Signs of the Beast
+    // ============================================
+
+    Scene signsOfTheBeast(
+        "Signs of the Beast",
+        "You kneel beside the claw marks carved into the tunnel wall.\n\n"
+        "The spacing is wrong for an ordinary wolf.\n"
+        "The marks are too high, too deep, and too deliberate.\n\n"
+        "Your father's lessons return to you.\n\n"
+        "A werewolf.\n\n"
+        "The footsteps grow louder.\n"
+        "Whatever made these marks is coming toward you."
+    );
+
+    signsOfTheBeast.AddChoice(
+        "Retreat through the hatch.",
+        5
+    );
+
+    signsOfTheBeast.AddChoice(
+        "Escape with the evidence.",
+        15
+    );
+
+    scenes.push_back(signsOfTheBeast);
+
+    // ============================================
+    // Scene 17 - Hidden in the Shadows
+    // ============================================
+
+    Scene hiddenInShadows(
+        "Hidden in the Shadows",
+        "You quickly switch off your flashlight.\n\n"
+        "Pressing yourself against the cold tunnel wall,\n"
+        "you slip behind a stack of abandoned wooden crates.\n\n"
+        "The footsteps grow louder.\n\n"
+        "A massive shadow stretches across the passage.\n"
+        "Something stops only a few feet from your hiding place.\n\n"
+        "You hold your breath.\n\n"
+        "A low growl echoes through the darkness.\n\n"
+        "After several terrifying seconds, the creature\n"
+        "continues deeper into the tunnel.\n\n"
+        "Whatever it was, it didn't notice you."
+    );
+
+    hiddenInShadows.AddChoice(
+        "Escape with the evidence while the creature is gone.",
+        15
+    );
+
+    hiddenInShadows.AddChoice(
+        "Carefully retreat through the hatch.",
+        5
+    );
+
+    scenes.push_back(hiddenInShadows);
 }
 
 void Game::PlayScene(int sceneIndex)
@@ -862,6 +921,28 @@ void Game::HandleSceneEvents(int sceneIndex)
         std::cout << "============================================\n\n";
     }
 
+if (currentScene == 9 && !mPretendToBeCamper)
+{
+    player.IncreaseStealth();
+
+    mPretendToBeCamper = true;
+
+    std::cout << "============================================\n";
+    std::cout << "           MILESTONE REACHED!\n";
+    std::cout << "============================================\n";
+
+    std::cout << "You successfully blend in by pretending\n";
+    std::cout << "to be interested in attending the camp.\n\n";
+
+    std::cout << "Your ability to conceal your intentions improves.\n\n";
+
+    std::cout << "Stealth increased by 1!\n";
+    std::cout << "Current Stealth: "
+        << player.GetStealth() << "/10\n";
+
+    std::cout << "============================================\n\n";
+}
+
     if (currentScene == 10 && !mAskedAboutMissingPeople)
     {
         mDirectorSuspicion += 2;
@@ -990,6 +1071,27 @@ std::vector<Choice> Game::GetAvailableChoices(int sceneIndex)
         availableChoices.push_back({
             "[Perception] Investigate the unusual tracks.",
             6
+            });
+    }
+
+	//Underground Passage, hunting skill check
+    if (currentScene == 14 &&
+        player.CheckStat(PlayerStat::Hunting, 1))
+    {
+        availableChoices.push_back({
+            "[Hunting] Examine the claw marks for signs of a creature.",
+            16
+            });
+    }
+        
+    // Underground Passage - Stealth Skill Check
+
+    if (currentScene == 14 &&
+        player.CheckStat(PlayerStat::Stealth, 1))
+    {
+        availableChoices.push_back({
+            "[Stealth] Hide from the approaching creature.",
+            17
             });
     }
 

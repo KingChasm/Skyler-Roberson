@@ -29,6 +29,7 @@ private:
 	bool mInvestigatedRangerStation = false;
 	bool mInvestigatedTracks = false;
 	bool mIntroducedToDirector = false;
+	bool mPretendToBeCamper = false;
 
 	// Status
 	void ShowPlayerStatus() const;
