@@ -85,7 +85,41 @@ My current focus is testing and refining the existing prototype before expanding
 
 ### Week 3
 
-Stay tuned, this stand up is coming soon...
+## Week 3 Development Progress
+
+### Completed Work
+
+During Week 3, I focused on improving the organization, stability, and branching gameplay of Camp Woodwreath.
+
+**Scene System Refactoring**
+- Separated scene events from conditional choice handling.
+- Created dedicated functions for managing story events and available player choices.
+- Improved code organization to make future story expansions easier.
+
+**Navigation and Input Validation**
+- Reviewed the existing input validation system.
+- Added scene index validation to prevent invalid navigation.
+- Verified that players can navigate between scenes without encountering dead ends.
+
+**Expanded Underground Encounter**
+- Added Scene 16: Signs of the Beast.
+- Added Scene 17: Hidden in the Shadows.
+- Implemented a Hunting skill check that unlocks an investigation option.
+- Added a Stealth milestone for players who pretend to be campers.
+- Implemented a Stealth skill check that unlocks a hiding option.
+- Connected both new scenes to existing escape routes.
+
+### Challenges and Solutions
+
+One challenge was keeping story choices organized as the number of scenes increased. I addressed this by separating scene events and conditional choices into their own functions.
+
+Another challenge was ensuring that skill-based choices were actually obtainable. I added a Stealth milestone so players could unlock the new hiding option through their earlier decisions.
+
+### Next Steps
+
+- Expand the underground storyline with additional consequences.
+- Develop more meaningful endings based on player decisions.
+- Continue improving player progression and branching story paths.
 
 ### Week 4
 
