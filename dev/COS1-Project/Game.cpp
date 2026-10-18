@@ -533,6 +533,15 @@ void Game::PlayScene(int sceneIndex)
 
     while (currentScene != -1)
     {
+        // Prevent access to invalid scene indexes.
+        if (currentScene < 0 ||
+            currentScene >= static_cast<int>(scenes.size()))
+        {
+            std::cout << "\nERROR: Invalid scene index detected.\n";
+            std::cout << "Returning to the main menu...\n\n";
+            break;
+        }
+
         Scene& scene = scenes[currentScene];
 
         std::cout << "\n";
