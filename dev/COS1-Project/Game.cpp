@@ -50,6 +50,7 @@ void Game::StartNewGame()
     mInvestigatedRangerStation = false;
     mInvestigatedTracks = false;
     mIntroducedToDirector = false;
+	mPretendToBeCamper = false;
 
     mDirectorSuspicion = 0;
     mAskedAboutMissingPeople = false;
@@ -525,6 +526,64 @@ void Game::CreateScenes()
     );
 
     scenes.push_back(escapeEnding);
+
+    // ============================================
+    // Scene 16 - Signs of the Beast
+    // ============================================
+
+    Scene signsOfTheBeast(
+        "Signs of the Beast",
+        "You kneel beside the claw marks carved into the tunnel wall.\n\n"
+        "The spacing is wrong for an ordinary wolf.\n"
+        "The marks are too high, too deep, and too deliberate.\n\n"
+        "Your father's lessons return to you.\n\n"
+        "A werewolf.\n\n"
+        "The footsteps grow louder.\n"
+        "Whatever made these marks is coming toward you."
+    );
+
+    signsOfTheBeast.AddChoice(
+        "Retreat through the hatch.",
+        5
+    );
+
+    signsOfTheBeast.AddChoice(
+        "Escape with the evidence.",
+        15
+    );
+
+    scenes.push_back(signsOfTheBeast);
+
+    // ============================================
+    // Scene 17 - Hidden in the Shadows
+    // ============================================
+
+    Scene hiddenInShadows(
+        "Hidden in the Shadows",
+        "You quickly switch off your flashlight.\n\n"
+        "Pressing yourself against the cold tunnel wall,\n"
+        "you slip behind a stack of abandoned wooden crates.\n\n"
+        "The footsteps grow louder.\n\n"
+        "A massive shadow stretches across the passage.\n"
+        "Something stops only a few feet from your hiding place.\n\n"
+        "You hold your breath.\n\n"
+        "A low growl echoes through the darkness.\n\n"
+        "After several terrifying seconds, the creature\n"
+        "continues deeper into the tunnel.\n\n"
+        "Whatever it was, it didn't notice you."
+    );
+
+    hiddenInShadows.AddChoice(
+        "Escape with the evidence while the creature is gone.",
+        15
+    );
+
+    hiddenInShadows.AddChoice(
+        "Carefully retreat through the hatch.",
+        5
+    );
+
+    scenes.push_back(hiddenInShadows);
 }
 
 void Game::PlayScene(int sceneIndex)
@@ -533,6 +592,15 @@ void Game::PlayScene(int sceneIndex)
 
     while (currentScene != -1)
     {
+        // Prevent access to invalid scene indexes.
+        if (currentScene < 0 ||
+            currentScene >= static_cast<int>(scenes.size()))
+        {
+            std::cout << "\nERROR: Invalid scene index detected.\n";
+            std::cout << "Returning to the main menu...\n\n";
+            break;
+        }
+
         Scene& scene = scenes[currentScene];
 
         std::cout << "\n";
@@ -542,289 +610,15 @@ void Game::PlayScene(int sceneIndex)
 
         std::cout << scene.GetDescription() << "\n\n";
 
-        // ============================================
-        // Collectible Lore System
-        // ============================================
-
-        // Notebook Page 1 is discovered in Grand Portage.
-        if (currentScene == 1)
-        {
-            if (player.CollectNotebookPage(1))
-            {
-                std::cout << "============================================\n";
-                std::cout << "              LORE DISCOVERED!\n";
-                std::cout << "============================================\n";
-                std::cout << "You discovered Notebook Page 1!\n";
-                std::cout << "Notebook Pages: "
-                    << player.GetNotebookPageCount()
-                    << "/3\n";
-                std::cout << "============================================\n\n";
-            }
-        }
-
-        if (currentScene == 1 && !mInvestigatedGrandPortage)
-        {
-            player.IncreasePerception();
-
-            mInvestigatedGrandPortage = true;
-
-            std::cout << "============================================\n";
-            std::cout << "           MILESTONE REACHED!\n";
-            std::cout << "============================================\n";
-            std::cout << "You carefully investigate Grand Portage.\n";
-            std::cout << "Your awareness of the surroundings improves.\n\n";
-            std::cout << "Perception increased by 1!\n";
-            std::cout << "Current Perception: "
-                << player.GetPerception() << "/10\n";
-            std::cout << "============================================\n\n";
-        }
-
-		if (currentScene == 3)
-		{
-			if (player.CollectNotebookPage(2))
-			{
-				std::cout << "============================================\n";
-				std::cout << "              LORE DISCOVERED!\n";
-				std::cout << "============================================\n";
-				std::cout << "You discovered Notebook Page 2!\n";
-				std::cout << "Notebook Pages: "
-					<< player.GetNotebookPageCount()
-					<< "/3\n";
-				std::cout << "============================================\n\n";
-			}
-		}
-
-        if (currentScene == 4)
-        {
-            if (player.CollectNotebookPage(3))
-            {
-                std::cout << "============================================\n";
-                std::cout << "              LORE DISCOVERED!\n";
-                std::cout << "============================================\n";
-                std::cout << "You discovered Notebook Page 3!\n";
-                std::cout << "Notebook Pages: "
-                    << player.GetNotebookPageCount()
-                    << "/3\n";
-
-                if (player.HasCompleteNotebook())
-                {
-                    std::cout << "\n";
-                    std::cout << "You have reconstructed the notebook!\n";
-                    std::cout << "Not much yet but enough to to gather some information.\n";
-                    std::cout << "The pages contain disturbing information\n";
-                    std::cout << "about Camp Woodwreath and its inhabitants.\n";
-                }
-
-                std::cout << "============================================\n\n";
-            }
-        }
-
-        if (currentScene == 4 && !mInvestigatedRangerStation)
-        {
-            player.IncreaseCourage();
-
-            mInvestigatedRangerStation = true;
-
-            std::cout << "============================================\n";
-            std::cout << "           MILESTONE REACHED!\n";
-            std::cout << "============================================\n";
-            std::cout << "You explore the abandoned ranger station.\n";
-            std::cout << "Despite the evidence of something dangerous,\n";
-            std::cout << "you refuse to abandon the investigation.\n\n";
-            std::cout << "Courage increased by 1!\n";
-            std::cout << "Current Courage: "
-                << player.GetCourage() << "/10\n";
-            std::cout << "============================================\n\n";
-        }
-
-        if (currentScene == 6 && !mInvestigatedTracks)
-        {
-            player.IncreaseHunting();
-
-            mInvestigatedTracks = true;
-
-            std::cout << "============================================\n";
-            std::cout << "           MILESTONE REACHED!\n";
-            std::cout << "============================================\n";
-            std::cout << "You study the unusual tracks carefully.\n";
-            std::cout << "Your knowledge of tracking dangerous creatures\n";
-            std::cout << "has improved.\n\n";
-            std::cout << "Hunting increased by 1!\n";
-            std::cout << "Current Hunting: "
-                << player.GetHunting() << "/10\n";
-            std::cout << "============================================\n\n";
-        }
-
-        if (currentScene == 8 && !mIntroducedToDirector)
-        {
-            player.IncreaseCharisma();
-
-            mIntroducedToDirector = true;
-
-            std::cout << "============================================\n";
-            std::cout << "           MILESTONE REACHED!\n";
-            std::cout << "============================================\n";
-
-            std::cout << "You remain composed while speaking with\n";
-            std::cout << "Director Woodwreath.\n\n";
-
-            std::cout << "Your confidence in social situations grows.\n\n";
-
-            std::cout << "Charisma increased by 1!\n";
-            std::cout << "Current Charisma: "
-                << player.GetCharisma() << "/10\n";
-
-            std::cout << "============================================\n\n";
-        }
-
-        if (currentScene == 10 && !mAskedAboutMissingPeople)
-        {
-            mDirectorSuspicion += 2;
-
-            if (mDirectorSuspicion > 10)
-            {
-                mDirectorSuspicion = 10;
-            }
-
-            mAskedAboutMissingPeople = true;
-
-            std::cout << "============================================\n";
-            std::cout << "       DIRECTOR'S SUSPICION INCREASED\n";
-            std::cout << "============================================\n";
-            std::cout << "Your questions about the missing people\n";
-            std::cout << "have made Director Woodwreath uneasy.\n\n";
-
-            std::cout << "Suspicion increased by 2!\n";
-            std::cout << "Current Suspicion: "
-                << mDirectorSuspicion << "/10\n";
-
-            std::cout << "============================================\n\n";
-        }
-
-        // ============================================
-        // Director Suspicion - Successful Reassurance
-        // ============================================
-
-        if (currentScene == 11 && !mReassuredDirector)
-        {
-            // Reduce Suspicion by 2.
-            mDirectorSuspicion -= 2;
-
-            // Prevent Suspicion from dropping below zero.
-            if (mDirectorSuspicion < 0)
-            {
-                mDirectorSuspicion = 0;
-            }
-
-            mReassuredDirector = true;
-
-            std::cout << "============================================\n";
-            std::cout << "          DIRECTOR REASSURED\n";
-            std::cout << "============================================\n";
-
-            std::cout << "Your explanation seems to calm the director.\n";
-            std::cout << "He appears less suspicious of your intentions.\n\n";
-
-            std::cout << "Suspicion reduced by up to 2!\n";
-            std::cout << "Current Suspicion: "
-                << mDirectorSuspicion << "/10\n";
-
-            std::cout << "============================================\n\n";
-        }
+        // Process lore discoveries, milestones, and story events.
+		HandleSceneEvents(currentScene);
+        
 
         // ============================================
         // Display Available Choices
         // ============================================
-
-        // Create a temporary list of choices for this visit.
-        std::vector<Choice> availableChoices = scene.GetChoices();
-
-        // ============================================
-        // Director Relationship - Lodge Access
-        // ============================================
-
-        if (currentScene == 2 && mConfrontedDirector)
-        {
-            // Remove the normal conversation option.
-            for (auto it = availableChoices.begin();
-                it != availableChoices.end();)
-            {
-                if (it->nextScene == 7)
-                {
-                    it = availableChoices.erase(it);
-                }
-                else
-                {
-                    ++it;
-                }
-            }
-
-            // Replace it with a hostile encounter.
-            availableChoices.push_back({
-                "Approach the lodge despite the director's warning.",
-                13
-                });
-        }
-
-        // If the player has completed the notebook,
-        // unlock the secret entrance at the campgrounds.
-        if (currentScene == 2 && player.HasCompleteNotebook())
-        {
-            availableChoices.push_back({
-                "Search for the hidden entrance beneath the lodge.",
-                5
-                });
-        }
-
-        //Ranger Station, perception check
-        if (currentScene == 4 &&
-            player.CheckStat(PlayerStat::Perception, 1))
-        {
-            availableChoices.push_back({
-                "[Perception] Investigate the unusual tracks.",
-                6
-                });
-        }
-
-		// Director Woodwreath, charisma check
-        if (currentScene == 10 &&
-            player.CheckStat(PlayerStat::Charisma, 1) &&
-            !mReassuredDirector)
-        {
-            availableChoices.push_back({
-                "[Charisma] Reassure the director.",
-                11
-                });
-        }
-
-        // Director Woodwreath, Confrontation
-        if (currentScene == 10 && mDirectorSuspicion >= 2)
-        {
-            availableChoices.push_back({
-                "[Suspicion] Challenge the director's explanation.",
-                12
-                });
-        }
-
-        // ============================================
-        // Story Event - Director Confronted
-        // ============================================
-
-        if (currentScene == 12 && !mConfrontedDirector)
-        {
-            mConfrontedDirector = true;
-
-            std::cout << "============================================\n";
-            std::cout << "           RELATIONSHIP CHANGED\n";
-            std::cout << "============================================\n";
-
-            std::cout << "Director Woodwreath now considers you\n";
-            std::cout << "a threat to his camp.\n\n";
-
-            std::cout << "He has ordered you to leave the property.\n";
-
-            std::cout << "============================================\n\n";
-        }
+             
+        std::vector<Choice> availableChoices = GetAvailableChoices(currentScene);
 
         // Display all currently available choices.
         for (int i = 0; i < static_cast<int>(availableChoices.size()); i++)
@@ -962,7 +756,12 @@ void Game::ShowPlayerStatus() const
     std::cout << "Director Woodwreath's Suspicion: "
         << mDirectorSuspicion << "/10\n";
 
-    if (mDirectorSuspicion <= 2)
+    // Confrontation overrides the director's normal attitude.
+    if (mConfrontedDirector)
+    {
+        std::cout << "Attitude: Hostile\n";
+    }
+    else if (mDirectorSuspicion <= 2)
     {
         std::cout << "Attitude: Friendly\n";
     }
@@ -981,4 +780,340 @@ void Game::ShowPlayerStatus() const
 
     std::cout << "\n";
     std::cout << "============================================\n";
+}
+
+void Game::HandleSceneEvents(int sceneIndex)
+{
+    int currentScene = sceneIndex;
+
+    // ============================================
+        // Collectible Lore System
+        // ============================================
+
+        // Notebook Page 1 is discovered in Grand Portage.
+    if (currentScene == 1)
+    {
+        if (player.CollectNotebookPage(1))
+        {
+            std::cout << "============================================\n";
+            std::cout << "              LORE DISCOVERED!\n";
+            std::cout << "============================================\n";
+            std::cout << "You discovered Notebook Page 1!\n";
+            std::cout << "Notebook Pages: "
+                << player.GetNotebookPageCount()
+                << "/3\n";
+            std::cout << "============================================\n\n";
+        }
+    }
+
+    if (currentScene == 1 && !mInvestigatedGrandPortage)
+    {
+        player.IncreasePerception();
+
+        mInvestigatedGrandPortage = true;
+
+        std::cout << "============================================\n";
+        std::cout << "           MILESTONE REACHED!\n";
+        std::cout << "============================================\n";
+        std::cout << "You carefully investigate Grand Portage.\n";
+        std::cout << "Your awareness of the surroundings improves.\n\n";
+        std::cout << "Perception increased by 1!\n";
+        std::cout << "Current Perception: "
+            << player.GetPerception() << "/10\n";
+        std::cout << "============================================\n\n";
+    }
+
+    if (currentScene == 3)
+    {
+        if (player.CollectNotebookPage(2))
+        {
+            std::cout << "============================================\n";
+            std::cout << "              LORE DISCOVERED!\n";
+            std::cout << "============================================\n";
+            std::cout << "You discovered Notebook Page 2!\n";
+            std::cout << "Notebook Pages: "
+                << player.GetNotebookPageCount()
+                << "/3\n";
+            std::cout << "============================================\n\n";
+        }
+    }
+
+    if (currentScene == 4)
+    {
+        if (player.CollectNotebookPage(3))
+        {
+            std::cout << "============================================\n";
+            std::cout << "              LORE DISCOVERED!\n";
+            std::cout << "============================================\n";
+            std::cout << "You discovered Notebook Page 3!\n";
+            std::cout << "Notebook Pages: "
+                << player.GetNotebookPageCount()
+                << "/3\n";
+
+            if (player.HasCompleteNotebook())
+            {
+                std::cout << "\n";
+                std::cout << "You have reconstructed the notebook!\n";
+                std::cout << "Not much yet but enough to to gather some information.\n";
+                std::cout << "The pages contain disturbing information\n";
+                std::cout << "about Camp Woodwreath and its inhabitants.\n";
+            }
+
+            std::cout << "============================================\n\n";
+        }
+    }
+
+    if (currentScene == 4 && !mInvestigatedRangerStation)
+    {
+        player.IncreaseCourage();
+
+        mInvestigatedRangerStation = true;
+
+        std::cout << "============================================\n";
+        std::cout << "           MILESTONE REACHED!\n";
+        std::cout << "============================================\n";
+        std::cout << "You explore the abandoned ranger station.\n";
+        std::cout << "Despite the evidence of something dangerous,\n";
+        std::cout << "you refuse to abandon the investigation.\n\n";
+        std::cout << "Courage increased by 1!\n";
+        std::cout << "Current Courage: "
+            << player.GetCourage() << "/10\n";
+        std::cout << "============================================\n\n";
+    }
+
+    if (currentScene == 6 && !mInvestigatedTracks)
+    {
+        player.IncreaseHunting();
+
+        mInvestigatedTracks = true;
+
+        std::cout << "============================================\n";
+        std::cout << "           MILESTONE REACHED!\n";
+        std::cout << "============================================\n";
+        std::cout << "You study the unusual tracks carefully.\n";
+        std::cout << "Your knowledge of tracking dangerous creatures\n";
+        std::cout << "has improved.\n\n";
+        std::cout << "Hunting increased by 1!\n";
+        std::cout << "Current Hunting: "
+            << player.GetHunting() << "/10\n";
+        std::cout << "============================================\n\n";
+    }
+
+    if (currentScene == 8 && !mIntroducedToDirector)
+    {
+        player.IncreaseCharisma();
+
+        mIntroducedToDirector = true;
+
+        std::cout << "============================================\n";
+        std::cout << "           MILESTONE REACHED!\n";
+        std::cout << "============================================\n";
+
+        std::cout << "You remain composed while speaking with\n";
+        std::cout << "Director Woodwreath.\n\n";
+
+        std::cout << "Your confidence in social situations grows.\n\n";
+
+        std::cout << "Charisma increased by 1!\n";
+        std::cout << "Current Charisma: "
+            << player.GetCharisma() << "/10\n";
+
+        std::cout << "============================================\n\n";
+    }
+
+if (currentScene == 9 && !mPretendToBeCamper)
+{
+    player.IncreaseStealth();
+
+    mPretendToBeCamper = true;
+
+    std::cout << "============================================\n";
+    std::cout << "           MILESTONE REACHED!\n";
+    std::cout << "============================================\n";
+
+    std::cout << "You successfully blend in by pretending\n";
+    std::cout << "to be interested in attending the camp.\n\n";
+
+    std::cout << "Your ability to conceal your intentions improves.\n\n";
+
+    std::cout << "Stealth increased by 1!\n";
+    std::cout << "Current Stealth: "
+        << player.GetStealth() << "/10\n";
+
+    std::cout << "============================================\n\n";
+}
+
+    if (currentScene == 10 && !mAskedAboutMissingPeople)
+    {
+        mDirectorSuspicion += 2;
+
+        if (mDirectorSuspicion > 10)
+        {
+            mDirectorSuspicion = 10;
+        }
+
+        mAskedAboutMissingPeople = true;
+
+        std::cout << "============================================\n";
+        std::cout << "       DIRECTOR'S SUSPICION INCREASED\n";
+        std::cout << "============================================\n";
+        std::cout << "Your questions about the missing people\n";
+        std::cout << "have made Director Woodwreath uneasy.\n\n";
+
+        std::cout << "Suspicion increased by 2!\n";
+        std::cout << "Current Suspicion: "
+            << mDirectorSuspicion << "/10\n";
+
+        std::cout << "============================================\n\n";
+    }
+
+    // ============================================
+    // Director Suspicion - Successful Reassurance
+    // ============================================
+
+    if (currentScene == 11 && !mReassuredDirector)
+    {
+        // Reduce Suspicion by 2.
+        mDirectorSuspicion -= 2;
+
+        // Prevent Suspicion from dropping below zero.
+        if (mDirectorSuspicion < 0)
+        {
+            mDirectorSuspicion = 0;
+        }
+
+        mReassuredDirector = true;
+
+        std::cout << "============================================\n";
+        std::cout << "          DIRECTOR REASSURED\n";
+        std::cout << "============================================\n";
+
+        std::cout << "Your explanation seems to calm the director.\n";
+        std::cout << "He appears less suspicious of your intentions.\n\n";
+
+        std::cout << "Suspicion reduced by up to 2!\n";
+        std::cout << "Current Suspicion: "
+            << mDirectorSuspicion << "/10\n";
+
+        std::cout << "============================================\n\n";
+    }
+
+    // ============================================
+        // Story Event - Director Confronted
+        // ============================================
+
+    if (currentScene == 12 && !mConfrontedDirector)
+    {
+        mConfrontedDirector = true;
+
+        std::cout << "============================================\n";
+        std::cout << "           RELATIONSHIP CHANGED\n";
+        std::cout << "============================================\n";
+
+        std::cout << "Director Woodwreath now considers you\n";
+        std::cout << "a threat to his camp.\n\n";
+
+        std::cout << "He has ordered you to leave the property.\n";
+        
+        std::cout << "============================================\n\n";
+    }
+}
+
+std::vector<Choice> Game::GetAvailableChoices(int sceneIndex)
+{
+	int currentScene = sceneIndex;
+	Scene& scene = scenes[currentScene];
+
+    // Create a temporary list of choices for this visit.
+    std::vector<Choice> availableChoices = scene.GetChoices();
+
+    // ============================================
+    // Director Relationship - Lodge Access
+    // ============================================
+
+    if (currentScene == 2 && mConfrontedDirector)
+    {
+        // Remove the normal conversation option.
+        for (auto it = availableChoices.begin();
+            it != availableChoices.end();)
+        {
+            if (it->nextScene == 7)
+            {
+                it = availableChoices.erase(it);
+            }
+            else
+            {
+                ++it;
+            }
+        }
+
+        // Replace it with a hostile encounter.
+        availableChoices.push_back({
+            "Approach the lodge despite the director's warning.",
+            13
+            });
+    }
+
+    // If the player has completed the notebook,
+    // unlock the secret entrance at the campgrounds.
+    if (currentScene == 2 && player.HasCompleteNotebook())
+    {
+        availableChoices.push_back({
+            "Search for the hidden entrance beneath the lodge.",
+            5
+            });
+    }
+
+    //Ranger Station, perception check
+    if (currentScene == 4 &&
+        player.CheckStat(PlayerStat::Perception, 1))
+    {
+        availableChoices.push_back({
+            "[Perception] Investigate the unusual tracks.",
+            6
+            });
+    }
+
+	//Underground Passage, hunting skill check
+    if (currentScene == 14 &&
+        player.CheckStat(PlayerStat::Hunting, 1))
+    {
+        availableChoices.push_back({
+            "[Hunting] Examine the claw marks for signs of a creature.",
+            16
+            });
+    }
+        
+    // Underground Passage - Stealth Skill Check
+
+    if (currentScene == 14 &&
+        player.CheckStat(PlayerStat::Stealth, 1))
+    {
+        availableChoices.push_back({
+            "[Stealth] Hide from the approaching creature.",
+            17
+            });
+    }
+
+    // Director Woodwreath, charisma check
+    if (currentScene == 10 &&
+        player.CheckStat(PlayerStat::Charisma, 1) &&
+        !mReassuredDirector)
+    {
+        availableChoices.push_back({
+            "[Charisma] Reassure the director.",
+            11
+            });
+    }
+
+    // Director Woodwreath, Confrontation
+    if (currentScene == 10 && mDirectorSuspicion >= 2)
+    {
+        availableChoices.push_back({
+            "[Suspicion] Challenge the director's explanation.",
+            12
+            });
+    }
+
+    return availableChoices;
 }
