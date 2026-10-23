@@ -85,7 +85,25 @@ My current focus is testing and refining the existing prototype before expanding
 
 ### Week 3
 
-Stay tuned, this stand up is coming soon...
+This week, I focused on improving the structure of Camp Woodwreath and expanding its branching storyline. I refactored the scene system, improved navigation safety, and added two new underground encounters.
+
+### Improvements
+I separated scene events from conditional player choices by creating dedicated functions. I also added scene index validation to prevent invalid navigation.
+
+I expanded the underground storyline with Hunting and Stealth skill checks, allowing players to unlock different choices based on earlier decisions.
+
+### Challenges
+One challenge was managing the growing number of story choices. Refactoring helped make the code easier to organize.
+
+Another challenge was that players couldn't unlock the Stealth encounter without a way to increase their Stealth stat. I solved this by adding a milestone for pretending to be a camper.
+
+### Accomplishments
+I improved my understanding of organizing C++ functions, implementing conditional gameplay, and connecting player progression to branching story choices.
+
+I'm particularly happy that both new underground encounters work and have valid exits.
+
+### Next Steps
+Before Week 4, I plan to continue improving the storyline, expand the consequences of player decisions, and prepare additional endings.
 
 ### Week 4
 
