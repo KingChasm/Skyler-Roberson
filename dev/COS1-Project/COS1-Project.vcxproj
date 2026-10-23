@@ -144,8 +144,11 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Story.cpp" />
+    <ClCompile Include="StoryEvents.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ConsoleColors.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Scene.h" />

@@ -27,6 +27,7 @@ private:
 	// Story Milestone Tracking
 	bool mInvestigatedGrandPortage = false;
 	bool mInvestigatedRangerStation = false;
+	bool mNotebookLoreAwarded = false;
 	bool mInvestigatedTracks = false;
 	bool mIntroducedToDirector = false;
 	bool mPretendToBeCamper = false;
@@ -37,10 +38,12 @@ private:
 	// Character Suspicion System
 	int mDirectorSuspicion = 0;
 	bool mAskedAboutMissingPeople = false;
+	bool mRepeatedMissingPeopleQuestion = false;
 	bool mReassuredDirector = false;
 	bool mConfrontedDirector = false;
+	bool mDiplomaticResponseUsed = false;
+	bool mDiscoveredDirectorClue = false;
 
 public:
 	void Start();
 };
-

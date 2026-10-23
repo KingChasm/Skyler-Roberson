@@ -4,9 +4,21 @@
 
 int main()
 {
-    Game game;
+    try
+    {
+        Game game;
 
-    game.Start();
+		game.Start();
+    }
+    catch (const std::exception& error)
+    {
+        std::cerr << "\nAn error occurred: "
+            << error.what() << "\n";
+
+        std::cerr << "Camp Woodwreath is closing safely.\n";
+
+        return 1;
+    }
 
     return 0;
 }
