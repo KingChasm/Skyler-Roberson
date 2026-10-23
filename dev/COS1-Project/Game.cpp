@@ -95,7 +95,7 @@ void Game::CreateScenes()
     );
 
 	town.AddChoice("Travel to Camp Woodwreath.", 2);
-    town.AddChoice("End the investigation.", -1);
+    town.AddChoice("End the investigation.", 18);
 
     scenes.push_back(town);
 
@@ -117,7 +117,7 @@ void Game::CreateScenes()
     camp.AddChoice("Follow the forest trail.", 4);
     camp.AddChoice("Return to Grand Portage.", 1);
 	camp.AddChoice("Approach the main lodge and speak with the director.", 7);
-    camp.AddChoice("End the investigation.", -1);
+    camp.AddChoice("End the investigation.", 18);
 
     scenes.push_back(camp);
 
@@ -493,11 +493,14 @@ void Game::CreateScenes()
         "Retreat through the hatch.",
         5
     );
-
+    undergroundPassage.AddChoice(
+        "Follow the mysterious footsteps deeper into the tunnels.",
+        19
+    );
     scenes.push_back(undergroundPassage);
 
     // ============================================
-    // Scene 15 - Prototype Ending
+    // Scene 15 - Run  Rabbit
     // ============================================
 
     Scene escapeEnding(
@@ -510,14 +513,34 @@ void Game::CreateScenes()
 
         "You finally understand what you've uncovered.\n\n"
 
-        "Camp Woodwreath is hiding something monstrous.\n"
-        "And the people responsible know you're investigating.\n\n"
+        "Camp Woodwreath is not an ordinary summer camp.\n"
+        "Something monstrous lives beneath its peaceful appearance.\n\n"
 
-        "You escape with enough evidence to continue\n"
-        "the hunt another day.\n\n"
+        "Your father's warnings suddenly make sense.\n"
+        "These creatures are not simply wild animals.\n\n"
 
-        "TO BE CONTINUED...\n\n"
-        "Thank you for playing the Camp Woodwreath prototype!"
+        "They are werewolves.\n\n"
+
+        "And Director Woodwreath is protecting them.\n\n"
+
+        "You escape the forest carrying enough evidence\n"
+        "to expose what is happening at the camp.\n\n"
+
+        "But as the first lights of Grand Portage appear,\n"
+        "you hear several distant howls answering one another.\n\n"
+
+        "There was never just one monster.\n\n"
+
+        "============================================\n"
+        "              INVESTIGATION COMPLETE\n"
+        "============================================\n\n"
+
+        "ENDING UNLOCKED: THE TRUTH SURVIVES\n\n"
+
+        "You survived Camp Woodwreath.\n"
+        "But the hunt is far from over.\n\n"
+
+        "Thank you for playing Camp Woodwreath!"
     );
 
     escapeEnding.AddChoice(
@@ -584,6 +607,113 @@ void Game::CreateScenes()
     );
 
     scenes.push_back(hiddenInShadows);
+
+    // ============================================
+    // Scene 18 - Neutral Ending
+    // ============================================
+
+    Scene neutralEnding(
+        "SOME SECRETS STAY BURIED",
+        "You decide that continuing this investigation\n"
+        "isn't worth risking your life.\n\n"
+
+        "The disappearances are disturbing, but you\n"
+        "have no idea what you're truly dealing with.\n\n"
+
+        "You leave Grand Portage behind.\n\n"
+
+        "Days pass. Then weeks.\n\n"
+
+        "Eventually, another person disappears near\n"
+        "Camp Woodwreath.\n\n"
+
+        "And then another.\n\n"
+
+        "You survived.\n"
+        "But whatever lives in those woods remains free.\n\n"
+
+        "============================================\n"
+        "             INVESTIGATION ABANDONED\n"
+        "============================================\n\n"
+
+        "ENDING UNLOCKED: SOME SECRETS STAY BURIED\n\n"
+
+        "Sometimes surviving means walking away.\n"
+        "But some choices are harder to forget.\n\n"
+
+        "Thank you for playing Camp Woodwreath!\n\n"
+
+        "P.S.\n"
+        "Some secrets are meant to stay buried, some are not...chicken. :<"
+    );
+
+    neutralEnding.AddChoice(
+        "Return to the main menu.",
+        -1
+    );
+
+    scenes.push_back(neutralEnding);
+
+	// ============================================
+	// Scene 19 - Bad Ending
+	// ============================================
+
+    Scene badEnding(
+        "THE HUNTER BECOMES THE HUNTED",
+        "Against your better judgment, you follow\n"
+        "the footsteps deeper into the passage.\n\n"
+
+        "The tunnel opens into a massive underground chamber.\n\n"
+
+        "Bones litter the floor.\n"
+        "Claw marks cover the walls.\n\n"
+
+        "Then the footsteps stop.\n\n"
+
+        "A familiar voice echoes through the darkness.\n\n"
+
+        "\"I warned you to leave my camp.\"\n\n"
+
+        "Director Woodwreath steps into the light.\n\n"
+
+        "His body begins to twist and change. The transformation was slow and painful looking.\n"
+        "Though you were frozen in terror at the sight. His hands become claws.\n"
+        "His teeth sharpen into fangs.\n\n"
+
+        "Before you can gain your bearings, more figures emerge\n"
+        "from the darkness behind you.\n\n"
+
+        "You finally understand your mistake.\n\n"
+
+        "There was never just one werewolf.\n\n"
+
+        "You came here expecting to hunt a monster.\n"
+        "Instead, you walked into the heart of its pack.\n\n"
+
+        "Your flashlight falls to the ground.\n\n"
+
+        "The last thing you hear is a chorus of howls.\n\n"
+
+        "Your world is overcome with whitehot pain, though that soon fades into cold\n"
+		"and finally into darkness.\n\n"
+
+        "============================================\n"
+        "               INVESTIGATION FAILED\n"
+        "============================================\n\n"
+
+        "ENDING UNLOCKED: THE HUNTER BECOMES THE HUNTED\n\n"
+
+        "The hunter has become the prey.\n\n"
+
+        "Thank you for playing Camp Woodwreath!"
+    );
+
+    badEnding.AddChoice(
+        "Return to the main menu.",
+        -1
+    );
+
+    scenes.push_back(badEnding);
 }
 
 void Game::PlayScene(int sceneIndex)
