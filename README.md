@@ -107,4 +107,23 @@ Before Week 4, I plan to continue improving the storyline, expand the consequenc
 
 ### Week 4
 
-My final stand up...
+**Overview**
+This week, I focused on finishing Camp Woodwreath, fixing bugs, testing gameplay, and preparing the project for submission.
+
+**Project Wrap-Up**
+Camp Woodwreath is now a playable C++ console horror game featuring branching storylines, three endings, six player stats, collectible lore, skill checks, and a character suspicion system.
+
+**Challenges**
+My biggest challenges were managing complicated dialogue branches and making sure certain choices appeared only when their requirements were met. I addressed these problems through refactoring, debugging, and testing.
+
+**Biggest Takeaway**
+This project helped me improve my understanding of C++ classes, vectors, references, input validation, and organizing larger programs. I'm especially proud of the branching story system and player status screen.
+
+**Future Development**
+If I continue developing Camp Woodwreath, I would like to add more story paths, additional supernatural encounters, and a save/load system. On top of that, I'd like to add individual encounters. More purpose to Grand Portage as a town, giving it a purpose; it currently lacks one beyond a skill point.
+
+tldr; There are like, a dozen different independent features I want to add to this stinking project and am being halted on time and me work schedule.
+
+The werewolves were the least of my problems; my greatest challenge was overcoming and dodging Window Security and Smart App Control.
+
+![[Pasted image 20261023193420.png]]
