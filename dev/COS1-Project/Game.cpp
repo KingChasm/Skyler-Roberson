@@ -106,7 +106,7 @@ void Game::PlayScene(int sceneIndex)
             break;
         }
 
-        Scene& scene = scenes[currentScene];
+        const Scene& scene = scenes[currentScene];
 
         // ============================================
         // Display Scene with Atmospheric Colors
@@ -569,7 +569,7 @@ std::vector<Choice> Game::GetAvailableChoices(int sceneIndex)
             });
     }
 
-    return availableChoices;
+    
 
     // ============================================
     // Repeated Questions - Perception Skill Check
@@ -609,4 +609,6 @@ std::vector<Choice> Game::GetAvailableChoices(int sceneIndex)
             33
             });
     }
+    
+    return availableChoices;
 }
